@@ -15,7 +15,7 @@ ENV CONFD_VERSION=v0.11.0 GOMAXPROCS=2 \
     GOBIN=/gopath/bin 
 
 RUN apk add --update go git gcc musl-dev \
-  && mkdir /opt/src; cd /opt/src \
+  && mkdir -p /opt/src; cd /opt/src \
   && git clone -b "$CONFD_VERSION" https://github.com/kelseyhightower/confd.git \
   && cd $GOPATH/confd/src/github.com/kelseyhightower/confd \
   && GOPATH=$GOPATH/confd/vendor:$GOPATH/confd CGO_ENABLED=0 go build -v -installsuffix cgo -ldflags '-extld ld -extldflags -static' -a -x . \
