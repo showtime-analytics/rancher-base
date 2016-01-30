@@ -1,15 +1,12 @@
-FROM docker.io/alpine:3.2
+FROM docker.io/alpine:3.3
 MAINTAINER Raul Sanchez <rawmind@gmail.com>
 
-# Install basic packages
-RUN apk add --update bash openssl openssh curl && rm -rf /var/cacke/apk/* \
-  && mkdir -p /opt/s6; \
-wget https://github.com/just-containers/skaware/releases/download/v1.16.1/s6-2.2.2.0-linux-amd64-bin.tar.gz; \
-tar -xvzf s6-2.2.2.0-linux-amd64-bin.tar.gz --directory /opt/s6; \
-chmod -R 755 /opt/s6/usr/bin; \
-mv /opt/s6/usr/bin/* /usr/bin; \
-rm s6-2.2.2.0-linux-amd64-bin.tar.gz; \
-rm -rf /opt/s6
+# Install basic packages and config monit
+RUN apk add --update bash monit openssl openssh curl && rm -rf /var/cacke/apk/* \
+  && mkdir -p /etc/monit/conf.d/
+COPY monit/monitrc /etc/monitrc
+RUN chown root:root /etc/monitrc && chmod 700 /etc/monitrc
+COPY monit/basic /etc/monit/conf.d/basic
 
 # Install compile and install confd
 ENV CONFD_VERSION=v0.11.0 GOMAXPROCS=2 \
@@ -33,3 +30,5 @@ RUN apk add --update go git gcc musl-dev \
 #RUN cat /etc/ssl/certs/<ca.pem> >> /etc/ssl/certs/ca-certificates.crt && \
    #cd /etc/ssl/certs/ && \
    #ln -s <ca.pem> `openssl x509 -hash -noout -in <ca.pem>`.0
+
+CMD ["/usr/bin/monit", "-I"]

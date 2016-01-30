@@ -1,7 +1,7 @@
 rancher-base
 ============
 
-Alpine-base image with basic extra software installed. (bash s6 openssl openssh curl confd and optional selfsigne_ca)
+Alpine-base image with basic extra software installed. (bash monit openssl openssh curl confd and optional selfsigned_ca)
 
 To build
 
