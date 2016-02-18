@@ -1,5 +1,5 @@
 FROM docker.io/alpine:3.3
-MAINTAINER Raul Sanchez <rawmind@gmail.com>
+MAINTAINER Alberto Gregoris <alberto@showtimeanalytics.com>
 
 # Install basic packages and config monit
 RUN apk add --update bash monit openssl openssh curl && rm -rf /var/cacke/apk/* \
